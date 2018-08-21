@@ -67,7 +67,6 @@ const styles = {
     display: "flex",
     backgroundColor: "rgba(239,239,244,1)"
   },
-
   listView: {},
   item: {
     display: "flex",
