@@ -1,18 +1,13 @@
 import { createElement, Component, render } from "rax";
 import View from "rax-view";
-import Text from "rax-text";
+import Touchable from "rax-touchable";
 import ListView from "rax-listview";
 import Image from "rax-image";
-import Link from "rax-link";
-// const native = require("@weex-module/test");
+const native = require("@weex-module/test");
 import SiteServices from "../services/site";
+import bookTag from "./assets/book-tag.png";
+import arrow from "./assets/arrow.png";
 
-let bookTag = {
-  uri: "http://p9j8ahs4w.bkt.clouddn.com/ccnu-rax-web/book-tag.png"
-};
-let arrow = {
-  uri: "http://p9j8ahs4w.bkt.clouddn.com/ccnu-rax-web/arrow.png"
-};
 class SitesList extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +18,7 @@ class SitesList extends Component {
   componentWillMount() {
     SiteServices.getSites().then(siteData => {
       this.setState({ siteData });
-      // native.changeLoadingStatus(true);
+      native.changeLoadingStatus(true);
     });
   }
 
@@ -36,11 +31,20 @@ class SitesList extends Component {
           index === this.state.siteData.length - 1 ? styles.last : {}
         ]}
       >
-        <Image style={styles.bookTag} source={bookTag} resizeMode="contain" />
-        <View style={styles.siteText}> {item.site} </View>
-        <Link style={styles.arrowContainer} href={item.url}>
-          <Image style={styles.arrow} source={arrow} resizeMode="contain" />
-        </Link>
+        <View style={styles.item_left}>
+          <Image style={styles.bookTag} source={bookTag} resizeMode="contain" />
+          <View style={styles.siteText}> {item.site} </View>
+        </View>
+
+        <Touchable
+          onPress={() => {
+            native.openBrowser(item.url);
+          }}
+        >
+          <View style={styles.arrowContainer}>
+            <Image style={styles.arrow} source={arrow} resizeMode="contain" />
+          </View>
+        </Touchable>
       </View>
     );
   };
@@ -61,34 +65,37 @@ const styles = {
   container: {
     flex: 1,
     display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "rgba(239,239,244,1)"
   },
 
-  listView: {
-    width: 750
-  },
+  listView: {},
   item: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
 
     marginBottom: 20,
     height: 100,
-    backgroundColor: "white"
+    backgroundColor: "white",
+    paddingLeft: 60,
+    paddingRight: 60
   },
   first: {
     marginTop: 45
+  },
+  item_left: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
   last: {
     marginBottom: 90
   },
   bookTag: {
     flex: 1,
-    height: 46
+    height: 46,
+    marginRight: 50
   },
   siteText: {
     fontSize: 30,
