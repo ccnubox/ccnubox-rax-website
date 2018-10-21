@@ -24,28 +24,32 @@ class SitesList extends Component {
 
   listItem = (item, index) => {
     return (
-      <View
-        style={[
-          styles.item,
-          index === 0 ? styles.first : {},
-          index === this.state.siteData.length - 1 ? styles.last : {}
-        ]}
+      <Touchable
+        onPress={() => {
+          native.openBrowser(item.url);
+        }}
       >
-        <View style={styles.item_left}>
-          <Image style={styles.bookTag} source={bookTag} resizeMode="contain" />
-          <View style={styles.siteText}> {item.site} </View>
-        </View>
-
-        <Touchable
-          onPress={() => {
-            native.openBrowser(item.url);
-          }}
+        <View
+          style={[
+            styles.item,
+            index === 0 ? styles.first : {},
+            index === this.state.siteData.length - 1 ? styles.last : {}
+          ]}
         >
+          <View style={styles.item_left}>
+            <Image
+              style={styles.bookTag}
+              source={bookTag}
+              resizeMode="contain"
+            />
+            <View style={styles.siteText}> {item.site} </View>
+          </View>
+
           <View style={styles.arrowContainer}>
             <Image style={styles.arrow} source={arrow} resizeMode="contain" />
           </View>
-        </Touchable>
-      </View>
+        </View>
+      </Touchable>
     );
   };
 
@@ -67,7 +71,6 @@ const styles = {
     display: "flex",
     backgroundColor: "rgba(239,239,244,1)"
   },
-  listView: {},
   item: {
     display: "flex",
     flexDirection: "row",
@@ -77,8 +80,7 @@ const styles = {
     marginBottom: 20,
     height: 100,
     backgroundColor: "white",
-    paddingLeft: 60,
-    paddingRight: 60
+    paddingLeft: 60
   },
   first: {
     marginTop: 45
@@ -86,7 +88,7 @@ const styles = {
   item_left: {
     display: "flex",
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "center"
   },
   last: {
     marginBottom: 90
@@ -102,7 +104,10 @@ const styles = {
   },
   arrowContainer: {
     flex: 1,
-    height: 46
+    height: 46,
+    width: 160,
+    alignItems: "flex-end",
+    paddingRight: 60
   },
   arrow: {
     height: 46
